@@ -74,7 +74,9 @@ describe SortByKey do
           expect(subject).to eq input
           expect(subject.keys).to eq [:bar, :baz, :foo]
           expect(subject[:baz][0].keys).to eq [:hoge, :fuga, :piyo]
+          expect(subject[:baz][0].values).to eq [3, 4, 5]
           expect(subject[:baz][1].keys).to eq [:spam, :ham, :egg]
+          expect(subject[:baz][1].values).to eq [6, 7, 8]
         end
       end
 
@@ -85,7 +87,9 @@ describe SortByKey do
           expect(subject).to eq input
           expect(subject.keys).to eq [:bar, :baz, :foo]
           expect(subject[:baz][0].keys).to eq [:fuga, :hoge, :piyo]
+          expect(subject[:baz][0].values).to eq [4, 3, 5]
           expect(subject[:baz][1].keys).to eq [:egg, :ham, :spam]
+          expect(subject[:baz][1].values).to eq [8, 7, 6]
         end
       end
     end
