@@ -48,5 +48,50 @@ describe SortByKey do
         end
       end
     end
+
+    context 'with nested Hash which contains Array' do
+      let(:input) do
+        {
+          foo: 1,
+          bar: 2,
+          baz: [
+            {
+              hoge: 3,
+              fuga: 4,
+              piyo: 5,
+            },
+            {
+              spam: 6,
+              ham: 7,
+              egg: 8,
+            },
+          ],
+        }
+      end
+
+      context 'without `recursive: true` option' do
+        it 'does not sort keys of inner Hash' do
+          expect(subject).to eq input
+          expect(subject.keys).to eq [:bar, :baz, :foo]
+          expect(subject[:baz][0].keys).to eq [:hoge, :fuga, :piyo]
+          expect(subject[:baz][0].values).to eq [3, 4, 5]
+          expect(subject[:baz][1].keys).to eq [:spam, :ham, :egg]
+          expect(subject[:baz][1].values).to eq [6, 7, 8]
+        end
+      end
+
+      context 'with `recursive: true` option' do
+        subject { SortByKey.sort_by_key(input, recursive: true) }
+
+        it 'sorts keys of inner Hash as well' do
+          expect(subject).to eq input
+          expect(subject.keys).to eq [:bar, :baz, :foo]
+          expect(subject[:baz][0].keys).to eq [:fuga, :hoge, :piyo]
+          expect(subject[:baz][0].values).to eq [4, 3, 5]
+          expect(subject[:baz][1].keys).to eq [:egg, :ham, :spam]
+          expect(subject[:baz][1].values).to eq [8, 7, 6]
+        end
+      end
+    end
   end
 end
