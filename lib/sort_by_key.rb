@@ -7,6 +7,8 @@ module SortByKey
       v = hash[k]
       if recursive && v.is_a?(Hash)
         acc[k] = self.sort_by_key(v, symbolize_keys: symbolize_keys, recursive: recursive, &block)
+      elsif recursive && v.is_a?(Enumerable)
+        acc[k] = v.map { |e| self.sort_by_key(e, symbolize_keys: symbolize_keys, recursive: recursive, &block) }
       else
         acc[k] = v
       end
